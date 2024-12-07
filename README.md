@@ -1,7 +1,17 @@
-# crypto-portfolio-tracker
-Cryptocurrency Portfolio Tracker A web application to track and visualize your cryptocurrency investments in real-time. Built with React, Node.js, and MongoDB, it integrates live cryptocurrency data through APIs and provides insightful performance charts for managing your portfolio.
+# Crypto Portfolio Tracker
 
+## Project Overview
+The **Crypto Portfolio Tracker** is a web application that helps users track their cryptocurrency holdings, visualize portfolio data, and monitor real-time market trends. This project is divided into two main parts:
+- **Backend**: Handles API requests, database interactions, and authentication.
+- **Frontend**: Provides a user-friendly interface for managing and visualizing portfolios.
 
+---
+
+## Project Structure
+
+The project follows a modular and organized structure for easier collaboration and scalability:
+
+```plaintext
 crypto-portfolio-tracker/
 ├── backend/                      # Backend-related code
 │   ├── controllers/              # Functions handling requests and responses
