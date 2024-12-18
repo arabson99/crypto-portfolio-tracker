@@ -1,6 +1,7 @@
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import dbClient from '../config/db';
+import User from '../models/User';
 
 class AuthController {
   static async register(request, response) {
@@ -16,11 +17,17 @@ class AuthController {
       // Hash the password
       const hashedPassword = await bcrypt.hash(password, 10);
 
+      // Using userSchema to add a new user to the database
+      await User.create({
+        email,
+        password: hashedPassword,        
+      })
+
       // Insert new user into the database
-      await dbClient.db.collection('users').insertOne({
+      /*await dbClient.db.collection('users').insertOne({
         email,
         password: hashedPassword,
-      });
+      });*/
 
       // Respond with a success message
       return response.status(201).send('User registered successfully');
