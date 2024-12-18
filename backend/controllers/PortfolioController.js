@@ -1,4 +1,5 @@
 import dbClient from '../config/db';
+import Portfolio from '../models/Portfolio';
 import cryptoService from '../services/cryptoService';
 
 class PortfolioController {
@@ -38,6 +39,14 @@ class PortfolioController {
           .status(400)
           .json({ error: 'Portfolio name and coins are required.' });
       }
+
+      // Adding a new portfolio to the database
+      const result = await Portfolio.create({
+        name,
+        coins,        
+      })
+
+      /*
       const newPortfolio = {
         name,
         coins,
@@ -46,6 +55,8 @@ class PortfolioController {
       const result = await dbClient.db
         .collection('portfolios')
         .insertOne(newPortfolio);
+      */
+
       return response.status(201).json({ id: result.insertedId });
     } catch (err) {
       return response.status(500).json({ error: 'Error creating portfolio' });
