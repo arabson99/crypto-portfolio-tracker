@@ -1,6 +1,8 @@
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import dbClient from '../config/db';
+import { ObjectId } from 'mongodb';
+
 
 class AuthController {
   static async register(request, response) {
@@ -50,6 +52,61 @@ class AuthController {
       return response.status(500).send('Error logging in');
     }
   }
+
+  static async deleteUser(request, response) {
+    const { user_id } = request.params;
+  
+    try {
+      // Find and delete user by user_id
+      const result = await dbClient.db.collection('users').deleteOne({ _id: new ObjectId(user_id) });
+  
+      if (result.deletedCount === 0) {
+        return response.status(404).json({ error: 'User not found' });
+      }
+  
+      return response.status(200).json({ message: 'User deleted successfully' });
+    } catch (err) {
+      return response.status(500).json({ error: 'Error deleting user' });
+    }
+  }
+
+  static async updateUser(request, response) {
+    const { user_id } = request.params;
+    const { email, password } = request.body;
+  
+    try {
+      // Find the user by user_id
+      const user = await dbClient.db.collection('users').findOne({ _id: new ObjectId(user_id) });
+      if (!user) {
+        return response.status(404).json({ error: 'User not found' });
+      }
+  
+      // Prepare the update data
+      const updateData = {};
+      if (email) updateData.email = email;
+      if (password) {
+        // Hash the new password before storing it
+        const hashedPassword = await bcrypt.hash(password, 10);
+        updateData.password = hashedPassword;
+      }
+  
+      // Update the user in the database
+      const result = await dbClient.db.collection('users').updateOne(
+        { _id: new ObjectId(user_id) },
+        { $set: updateData }
+      );
+  
+      if (result.matchedCount === 0) {
+        return response.status(404).json({ error: 'User not found' });
+      }
+  
+      return response.status(200).json({ message: 'User updated successfully' });
+    } catch (err) {
+      return response.status(500).json({ error: 'Error updating user' });
+    }
+  }
+  
+  
 }
 
 export default AuthController;
