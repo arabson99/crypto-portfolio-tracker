@@ -10,7 +10,13 @@ const getCurrentPrice = async (coinId, currency = 'usd') => {
                 vs_currencies: currency,
             },
         });
-        return response.data[coinId][currency];
+        // Check if the response structure is valid
+        if (response.data && response.data[coinId] && response.data[coinId][currency]) {
+            return response.data[coinId][currency];
+        } else {
+            console.error(`Price data for ${coinId} in ${currency} not found`);
+            return null;
+        }
     } catch (err) {
         console.error('Error fetching current price', err.message);
         throw new Error('Unable to fetch current price');

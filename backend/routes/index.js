@@ -14,9 +14,11 @@ router.post('/login', AuthController.login);
 router.use(authMiddleware); // Apply authMiddleware to protect the following routes
 
 router.get('/portfolios', PortfolioController.getAllPortfolios);
-router.get('/portfolios-prices', PortfolioController.getPortfolioWithPrices);
+router.get('/portfolio/:portfolioId/prices', PortfolioController.getPortfolioWithPrices);
 router.post('/portfolios', PortfolioController.createPortfolio);
 router.put('/portfolios/:id', PortfolioController.updatePortfolio);
 router.delete('/portfolios/:id', PortfolioController.deletePortfolio);
+router.delete('/user/:user_id', AuthController.deleteUser);
+router.put('/user/:user_id', AuthController.updateUser);
 
 export default router;
