@@ -16,7 +16,7 @@ router.use(authMiddleware); // Apply authMiddleware to protect the following rou
 router.get('/portfolios', PortfolioController.getAllPortfolios);
 router.get('/portfolio/:portfolioId/prices', PortfolioController.getPortfolioWithPrices);
 router.post('/portfolios', PortfolioController.createPortfolio);
-router.put('/portfolios/:id', PortfolioController.updatePortfolio);
+router.put('/portfolios/:portfolioId', PortfolioController.updatePortfolio);
 router.delete('/portfolios/:id', PortfolioController.deletePortfolio);
 router.delete('/user/:user_id', AuthController.deleteUser);
 router.put('/user/:user_id', AuthController.updateUser);
