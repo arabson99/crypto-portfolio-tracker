@@ -9,14 +9,15 @@ const router = express.Router();
 router.post('/register', AuthController.register);
 router.post('/login', AuthController.login);
 
-
 // Protected routes
 router.use(authMiddleware); // Apply authMiddleware to protect the following routes
 
 router.get('/portfolios', PortfolioController.getAllPortfolios);
-router.get('/portfolios-prices', PortfolioController.getPortfolioWithPrices);
+router.get('/portfolio/:portfolioId/prices', PortfolioController.getPortfolioWithPrices);
 router.post('/portfolios', PortfolioController.createPortfolio);
-router.put('/portfolios/:id', PortfolioController.updatePortfolio);
-router.delete('/portfolios/:id', PortfolioController.deletePortfolio);
+router.put('/portfolios/:portfolioId', PortfolioController.updatePortfolio);
+router.delete('/portfolio/:id', PortfolioController.deletePortfolio);
+router.delete('/user/:user_id', AuthController.deleteUser);
+router.put('/user/:user_id', AuthController.updateUser);
 
 export default router;
