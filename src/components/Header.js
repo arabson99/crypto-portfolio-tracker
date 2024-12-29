@@ -14,11 +14,14 @@ title: {
 }))
 
 const Header = () => {
+
+const classes = useStyles()
+
   return (
     <AppBar color='transparent' position='static'>
       <container>
         <Toolbar>
-          <Typography>
+          <Typography className={classes.title}>
             Crypto Trader
           </Typography>
           <Select variant="outlined" style={{
