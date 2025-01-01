@@ -1,6 +1,7 @@
-import { AppBar, container, Toolbar, Typography } from "@material-ui/core";
-import { MenuItem, Select, Typography } from "@mui/material";
-import React from 'react'
+import { AppBar, container, Toolbar, MenuItem, Select, Typography } from "@material-ui/core";
+import { createTheme, makeStyles, ThemeProvider, } from "@mui/material/core/styles";
+import { useHistory } from "react-router-dom";
+import { CryptoState } from "../CryptoContext";
 
 const useStyles = makeStyles(() => ({
 title: {
@@ -10,25 +11,43 @@ title: {
   fontWeight: "bold",
   cursor: "pointer",
 
-}
-}))
+},
+}));
 
-const Header = () => {
+function Header() {
+const classes = useStyles();
+const history = useHistory();
+const { currency, setCurrency } = CryptoState();
+console.log(currency);
 
-const classes = useStyles()
+const darkTheme = createTheme({
+  palette: {
+    primary: {
+      main: "#fff",
+    },
+    type: "dark",
+  },
+});
 
   return (
-    <AppBar color='transparent' position='static'>
+    <ThemeProvider theme={darkTheme}>
+    <AppBar color="transparent" position="static">
       <container>
         <Toolbar>
-          <Typography className={classes.title}>
+          <Typography onClick={() => history.push("/")} className={classes.title}
+            variant='h6'>
             Crypto Trader
           </Typography>
-          <Select variant="outlined" style={{
+          <Select variant="outlined"
+          labelId="demo-simple-select-label"
+          id="demo-simple-select"
+          style={{
             width: 100,
             height: 40,
-            marginleft: 15,
-          }}>
+            marginLeft: 15,
+          }}
+          value={currency}
+          onChange={(e) => setCurrency(e.target.value)}>
             <MenuItem value={"USD"}>USD</MenuItem>
             <MenuItem value={"INR"}>INR</MenuItem>
           </Select>
@@ -36,7 +55,8 @@ const classes = useStyles()
       </container>
 
     </AppBar>
-  )
+    </ThemeProvider>
+  );
 }
 
-export default Header
+export default Header;
