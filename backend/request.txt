@@ -1,0 +1,41 @@
+A script for all our endpoints
+------------------------------------------
+To create a profile
+curl -XPOST http://localhost:5000/api/register -H "Content-type: application/json" -d '{"email": "<YOUR EMAIL>", "password": "<YOUR PASSWORD">}' ; echo ""
+REPLY: "User registered successfully"
+
+To login to your account
+curl -XGET http://localhost:5000/api/login -H "Content-type: application/json" -d '{"email": "<YOUR EMAIL>", "password": "<YOUR PASSWORD">}' ; echo ""
+REPLY: {"token":"<YOUR TOKEN>", "Message": "Use this token to perform all operations on your account"}
+
+To get a user information
+curl -XGET http://localhost:5000/api/user/me -H ""Authorization: Bearer <YOUR TOKEN>"
+REPLY: <USER INFO>
+
+To Update a user information
+curl -XPUT http://localhost:5000/api/user/me -H ""Authorization: Bearer <YOUR TOKEN>" -d '{<OPTIONAL EMAIL OR PASSWORD TO UPDATE>}' ; echo ""
+REPLY: {"message": "User updated successfully"}
+
+To delete a user
+curl -XDELETE http://localhost:5000/api/user/me -H ""Authorization: Bearer <YOUR TOKEN>"
+REPLY: EMPTY
+
+To get the total coins available
+curl -XGET http://localhost:5000/api/cryptos -H ""Authorization: Bearer <YOUR TOKEN>"
+REPLY: There are <AMOUNT OF COINS AVALABLE> coins available to add
+
+To check if a coin name is valid
+curl -XGET http://localhost:5000/api/cryptos/<COIN NAME> -H ""Authorization: Bearer <YOUR TOKEN>"
+REPLY: <COIN NAME> can be added to your coin list
+
+To add a coin to a user document
+curl -XPOST http://localhost:5000/api/user/me/coins/<COIN NAME> -H ""Authorization: Bearer <YOUR TOKEN>"
+REPLY: <COIN NAME> has been added to your coin list 
+
+To delete a coin from a user document
+curl -XDELETE http://localhost:5000/api/user/me/coins/<COIN NAME> -H ""Authorization: Bearer <YOUR TOKEN>"
+REPLY <COIN NAME> has sucessfully being removed from your coin list
+
+To see all coins in a user document
+curl -XDELETE http://localhost:5000/api/user/me/coins -H ""Authorization: Bearer <YOUR TOKEN>"
+REPLY: <COINS LIST>
