@@ -4,13 +4,15 @@ import './index.css';
 import App from './App';
 import CryptoContext from './CryptoContext';
 
-ReactDOM.render(
+// Create a root element using the new React 18 API
+const root = ReactDOM.createRoot(document.getElementById('root'));
+
+// Render the app inside the root element
+root.render(
   <React.StrictMode>
     <CryptoContext>
-    <App />
+      <App />
     </CryptoContext>
-    
-  </React.StrictMode>,
-  document.getElementById('root')
+  </React.StrictMode>
 );
 
