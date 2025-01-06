@@ -1,31 +1,27 @@
-import { BrowserRouter,Route } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import './App.css';
-import Header from './components/Header'
+import Header from './components/Header';
 import Homepage from "./Pages/Homepage";
 import CoinPage from "./Pages/CoinPage";
-import { makeStyles } from "@material-ui/core";
+import { styled } from "@mui/material/styles";
 
-function App() {
-  
-  const useStyles = makeStyles(()=> ({
-App: {
+// Styled component for App container
+const AppContainer = styled('div')({
   backgroundColor: "#14161a",
   color: "white",
   minHeight: "100vh",
-},
-  }));
-  
-const classes = useStyles();
+});
 
+function App() {
   return (
     <BrowserRouter>
-    <div className={classes.App}>
-      <Header />
-      <Route path='/' component={Homepage} exact />
-      <Route path='/coins/:id' component={CoinPage} />
-
-
-    </div>
+      <AppContainer>
+        <Header />
+        <Routes>
+          <Route path="/" element={<Homepage />} />
+          <Route path="/coins/:id" element={<CoinPage />} />
+        </Routes>
+      </AppContainer>
     </BrowserRouter>
   );
 }
