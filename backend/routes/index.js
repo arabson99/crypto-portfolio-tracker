@@ -8,7 +8,7 @@ const router = express.Router();
 
 // Public routes
 router.post('/register', UserController.register);
-router.get('/login', UserController.login);
+router.post('/login', UserController.login);
 
 // Protected routes
 router.use(authMiddleware); // Apply authMiddleware to protect the following routes

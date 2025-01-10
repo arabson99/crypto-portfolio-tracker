@@ -48,7 +48,7 @@ function Banner() {
       <BannerContent>
         <Tagline>
           <BannerTitle variant="h2">
-            Crypto Trader
+            Cryptocurrency Portfolio Tracker
           </BannerTitle>
           <BannerSubtitle variant="subtitle2">
             scale through and know more about your crypto coins

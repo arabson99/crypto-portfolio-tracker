@@ -14,9 +14,10 @@ const Title = styled(Typography)({
 });
 
 const SelectContainer = styled(Select)({
-  width: 100,
+  width: 'auto',
   height: 40,
   marginLeft: 15,
+  cursor: 'pointer',
 });
 
 const Header = () => {
@@ -39,7 +40,7 @@ const Header = () => {
         <Container>
           <Toolbar>
             <Title onClick={() => history.push("/")} variant="h6">
-              Crypto Trader
+              Cryptocurrency Portfolio Tracker
             </Title>
             <SelectContainer
               variant="outlined"
