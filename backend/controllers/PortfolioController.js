@@ -5,7 +5,8 @@ import cryptoService from '../services/cryptoService';
 class PortfolioController {
   static async getAllPortfolios(request, response) {
     try {
-      const portfolios = await dbClient.db.collection('portfolios').find({}).toArray();
+      const userId = request.user.userId;
+      const portfolios = await dbClient.db.collection('portfolios').find({ userId: ObjectId(userId) }).toArray();
       response.status(200).json(portfolios);
     } catch (err) {
       response.status(500).json({ error: 'Error fetching portfolios' });
@@ -26,7 +27,7 @@ class PortfolioController {
         return response.status(404).json({ message: 'Portfolio not found' });
       }
 
-      const { coins } = portfolio; // Array of coins with their amounts
+      const { coins, name } = portfolio; // Array of coins with their amounts
 
       // Get prices for each coin in the portfolio
       const currentPrices = await Promise.all(
@@ -53,7 +54,7 @@ class PortfolioController {
         }),
       );
 
-      return response.status(200).json({ portfolioId, prices: currentPrices });
+      return response.status(200).json({ portfolioId, name, prices: currentPrices });
     } catch (error) {
       return response.status(500).json({ message: 'Error fetching portfolio prices', error: error.message });
     }
@@ -62,25 +63,53 @@ class PortfolioController {
   // Create a new portfolio
   static async createPortfolio(request, response) {
     try {
-      const { name, coins } = request.body; // Expecting name and an array of coin objects
-      if (!name || !coins) {
-        return response
-          .status(400)
-          .json({ error: 'Portfolio name and coins are required.' });
+      const { name, coins = [] } = request.body; // Default coins to an empty array if not provided
+      const userId = request.user.userId; // Get the userId from the decoded token
+  
+      // Validate that the portfolio name is provided
+      if (!name || name.trim() === "") {
+        return response.status(400).json({ error: 'Portfolio name is required.' });
       }
+  
+      // Create a new portfolio object, including the userId
       const newPortfolio = {
         name,
         coins,
         createdAt: new Date(),
+        userId: ObjectId(userId), // Associate the portfolio with the userId
       };
+  
+      // Insert the new portfolio into the database
       const result = await dbClient.db
         .collection('portfolios')
         .insertOne(newPortfolio);
-      return response.status(201).json({ id: result.insertedId });
+  
+      // Check if the portfolio was inserted successfully
+      if (result.insertedCount === 0) {
+        return response.status(500).json({ error: 'Failed to create portfolio.' });
+      }
+  
+      // Log the portfolio creation for debugging
+      console.log('New portfolio created with ID:', result.insertedId);
+  
+      // Return a successful response with the portfolio ID
+      return response.status(201).json({
+        id: result.insertedId,
+        name,
+        coins,
+        createdAt: newPortfolio.createdAt,
+      });
+  
     } catch (err) {
+      // Log the error for debugging
+      console.error('Error creating portfolio:', err);
+  
       return response.status(500).json({ error: 'Error creating portfolio' });
     }
   }
+  
+  
+  
 
   static async updatePortfolio(request, response) {
     try {

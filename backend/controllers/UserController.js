@@ -51,11 +51,8 @@ class UserController {
       if (!match) return response.status(401).json({ error: 'Invalid password' });
 
       // Generate a JWT token and return it in the response
-      const token = jwt.sign({ userId: user._id }, jwtSecret, { expiresIn: '1h' });
-      return response.json({
-        token,
-        Message: 'Use this token to perform all operations on your account',
-      });
+      const token = jwt.sign({ userId: user._id.toString() }, jwtSecret, { expiresIn: '1h' });
+      return response.json({ token });
     } catch (err) {
       // Handle errors during the login process
       return response.status(501).send('Error');
