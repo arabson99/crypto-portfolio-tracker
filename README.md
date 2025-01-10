@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # crypto-portfolio-tracker
 Crypto Portfolio Tracker is a web application for tracking cryptocurrency portfolios. It allows users to add, manage, and monitor their crypto holdings in real-time. The application fetches cryptocurrency market data from the CoinGecko API and displays it in an easy-to-understand format. Users can view their portfolio performance, track individual coin. Built with React, Node.js, and MongoDB, it integrates live cryptocurrency data through APIs and provides insightful performance charts for managing your portfolio.
 
