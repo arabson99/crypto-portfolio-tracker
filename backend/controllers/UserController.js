@@ -60,7 +60,7 @@ class UserController {
   }
 
   static async getMe(req, res) {
-    // To get a user's Infoemations
+    // To get a user's Informations
     const { userId } = req.user
     const user = await dbClient.db.collection('users').find({_id: ObjectId(userId)});
     if (!user) {
