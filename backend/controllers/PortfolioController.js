@@ -1,5 +1,6 @@
 import { ObjectId } from 'mongodb';
 import dbClient from '../config/db';
+import Portfolio from '../models/Portfolio';
 import cryptoService from '../services/cryptoService';
 
 class PortfolioController {
@@ -70,36 +71,14 @@ class PortfolioController {
       if (!name || name.trim() === "") {
         return response.status(400).json({ error: 'Portfolio name is required.' });
       }
-  
-      // Create a new portfolio object, including the userId
-      const newPortfolio = {
+
+      // Adding a new portfolio to the database
+      const result = await Portfolio.create({
         name,
-        coins,
-        createdAt: new Date(),
-        userId: ObjectId(userId), // Associate the portfolio with the userId
-      };
-  
-      // Insert the new portfolio into the database
-      const result = await dbClient.db
-        .collection('portfolios')
-        .insertOne(newPortfolio);
-  
-      // Check if the portfolio was inserted successfully
-      if (result.insertedCount === 0) {
-        return response.status(500).json({ error: 'Failed to create portfolio.' });
-      }
-  
-      // Log the portfolio creation for debugging
-      console.log('New portfolio created with ID:', result.insertedId);
-  
-      // Return a successful response with the portfolio ID
-      return response.status(201).json({
-        id: result.insertedId,
-        name,
-        coins,
-        createdAt: newPortfolio.createdAt,
-      });
-  
+        coins,        
+      })
+
+      return response.status(201).json({ id: result.insertedId });
     } catch (err) {
       // Log the error for debugging
       console.error('Error creating portfolio:', err);

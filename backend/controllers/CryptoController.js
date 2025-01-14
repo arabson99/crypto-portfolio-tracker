@@ -88,7 +88,7 @@ class CryptoController {
     if (removed.modifiedCount === 0) {
       return res.send(`${cryptoName} is not a part of your coins`);
     }
-    return res.send(`${cryptoName} has sucessfully being removed from your coin list`);
+    return res.send(`${cryptoName} has sucessfully been removed from your coin list`);
   }
 }
 
