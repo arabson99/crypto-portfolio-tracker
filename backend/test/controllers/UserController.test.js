@@ -33,25 +33,27 @@ describe('UserController', () => {
   });
 
   describe('register', () => {
-    it('should return 400 if email or password is missing', async () => {
+    it('should return 400 if email or password is missing', (done) => {
       mockRequest.body = {}; // No email or password
 
-      await UserController.register(mockRequest, mockResponse);
+      UserController.register(mockRequest, mockResponse);
 
       expect(mockResponse.status).to.have.been.calledWith(400);
       expect(mockResponse.json).to.have.been.calledWith({ error: 'Incomplete details' });
+      done();
     });
 
-    it('should return 400 if the user already exists', async () => {
+    it('should return 400 if the user already exists', (done) => {
       mockRequest.body = { email: 'test@example.com', password: 'password123' };
 
       // Mock database query
       sandbox.stub(dbClient.db.collection('users'), 'findOne').resolves({ email: 'test@example.com' });
 
-      await UserController.register(mockRequest, mockResponse);
+      UserController.register(mockRequest, mockResponse);
 
       expect(mockResponse.status).to.have.been.calledWith(400);
       expect(mockResponse.json).to.have.been.calledWith({ error: 'User already exists' });
+      done();
     });
 
     it('should return 201 when user is successfully registered', async () => {
